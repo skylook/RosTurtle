@@ -1,0 +1,8 @@
+<launch>
+  <!-- Start frontier_exploration -->
+  <include file="$(find frontier_exploration)/launch/no_global_map.launch" />
+
+  <!-- Start frontier_exploration -->
+  <include file="$(find turtlebot_rviz_launchers)/launch/view_navigation.launch" /> 
+
+</launch>
