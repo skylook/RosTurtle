@@ -7,6 +7,7 @@ Johan Osinga
 '''
 import ar_track_alvar_msgs.msg
 import rospy
+import pickle
 import tf2_ros
 import geometry_msgs.msg
 
@@ -33,6 +34,7 @@ class DetectMarkers(object):
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         self.marker_list = {}
+        self.marker_file_location = "save/"
 
 
 
@@ -50,6 +52,13 @@ class DetectMarkers(object):
         #Return list of known markers
         return self.marker_list
 
+    def save_to_file(self, name):
+        with open(self.marker_file_location + name + '.pkl', 'wb') as f:
+            pickle.dump(self.marker_list, f, pickle.HIGHEST_PROTOCOL)
+
+    def load_from_file(self, name):
+        with open(self.marker_file_location + name + '.pkl', 'rb') as f:
+            self.marker_list = pickle.load(f)
 
     def _ar_marker_callback(self, msg):
         #Check amount of markers detected
@@ -144,6 +153,12 @@ if __name__ == '__main__':
     print("Node started: " + ros_node_name)
 
     detect_markers = DetectMarkers(False)
+
+    input_var = raw_input("Enter S to save, O to open ")
+    if input_var == "s":
+        detect_markers.save_to_file("testfile")
+    elif input_var == "o":
+        detect_markers.load_from_file("testfile")
     
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
