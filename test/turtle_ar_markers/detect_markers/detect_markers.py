@@ -144,7 +144,6 @@ if __name__ == '__main__':
     print("Node started: " + ros_node_name)
 
     detect_markers = DetectMarkers(False)
-    #while not rospy.is_shutdown():
-        #print(detect_markers.get_markers())
+    
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
