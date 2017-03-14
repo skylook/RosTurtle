@@ -22,7 +22,7 @@ MARKER_SORT = MARKERS_IN_ARENA
 
 class GamePlan(object):
     '''
-    GamePlan classmethod
+    GamePlan Class
 
     Executes the gameplan for the Adaptive Robotics ROS challenge
     This gameplan assumes the (wall)marker positions are already known and saved
