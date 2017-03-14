@@ -1,0 +1,14 @@
+<!--
+  Used for visualizing the frontier explorer
+ -->
+<launch>
+  <!-- Edit this to your home path -->
+  <arg name="rvizpath" value="/home/<your name here>/catkin_ws/launch/rviz/frontier_rviz.rviz" />
+  <!-- Edit the above -->
+  
+  <!-- Start frontier_exploration -->
+  <include file="$(find frontier_exploration)/launch/no_global_map.launch" />
+
+  <!-- Start RVIZ -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizpath)"/>
+</launch>
