@@ -1,3 +1,11 @@
+'''
+game_known_markers
+
+
+14/03/2017
+Johan Osinga
+'''
+
 from detect_markers import DetectMarkers
 import rospy
 import tf
@@ -121,6 +129,3 @@ if __name__ == '__main__':
     
 
     rospy.spin()
-
-
-
