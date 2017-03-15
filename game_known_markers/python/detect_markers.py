@@ -22,7 +22,7 @@ class DetectMarkers(object):
 
     Listens to the tf2 and saves the transformed locations of the markers
     '''
-    def __init__(self, debug_logging=False):
+    def __init__(self, marker_file_location="", marker_file_name="markers", scan_for_markers=True, debug_logging=False):
         #Constructor
 
         #If debug is True then perform prints to console
@@ -37,13 +37,15 @@ class DetectMarkers(object):
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         self.pub_tf = rospy.Publisher("/tf", tf2_msgs.msg.TFMessage, queue_size=1)
         self.marker_list = {}
-        self.marker_file_location = "save/"
+        self.marker_file_location = marker_file_location
 
-
-        #Subscribe to ar_track_alvar output topic
-        rospy.Subscriber("ar_pose_marker",
-                         ar_track_alvar_msgs.msg.AlvarMarkers,
-                         self._ar_marker_callback)
+        #If scanning for markers is set, then scan for markers
+        #If not set then then this class is only for loading and supplying known markers
+        if scan_for_markers:
+            #Subscribe to ar_track_alvar output topic
+            rospy.Subscriber("ar_pose_marker",
+                            ar_track_alvar_msgs.msg.AlvarMarkers,
+                            self._ar_marker_callback)
 
     def get_markers_amount(self):
         #Return amount of known markers
@@ -159,8 +161,6 @@ class DetectMarkers(object):
                 self.marker_list[marker_name]['transform'] = trans.transform
                 self.marker_list[marker_name]['type'] = markertype
 
-
-                
             except Exception as e:
                 self._console_log("Error: " + str(e))
                 continue
@@ -221,6 +221,6 @@ if __name__ == '__main__':
             print(detect_markers.get_markers())
         elif input_var == "q":
             loop = False
-    
+
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
