@@ -125,7 +125,7 @@ class DetectMarkers(object):
                         #Save derived marker
                         self.marker_list[derived_marker_name] = {}
                         self.marker_list[derived_marker_name]['derived'] = True
-                        self.marker_list[derived_marker_name]['yaw'] = derived_marker_z
+                        self.marker_list[derived_marker_name]['yaw'] = derived_marker_z * -1.0
 
                 #Save known markers
                 if marker_name not in self.marker_list:
@@ -208,7 +208,7 @@ if __name__ == '__main__':
     rospy.init_node(ros_node_name)
     print("Node started: " + ros_node_name)
 
-    detect_markers = DetectMarkers(False)
+    detect_markers = DetectMarkers()
 
     loop = True
     while(loop):
