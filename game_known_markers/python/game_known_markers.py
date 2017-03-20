@@ -16,7 +16,7 @@ from geometry_msgs.msg import Point
 
 #Known markers in the map (0 - 11)
 #MARKERS_IN_ARENA = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-MARKERS_IN_ARENA = [0, 5, 11]
+MARKERS_IN_ARENA = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 #MARKER_SORT = [0, 2, 3, 4, 5, 6, 7, 8, 9, 1, 11]
 MARKER_SORT = MARKERS_IN_ARENA
 
@@ -50,13 +50,11 @@ class GamePlan(object):
 
     def play_game(self):
         #Play the game!
-
-        #Iterate over the known markers in the defined order
-        for marker_id in self._arena_markers_order:
+	
+	
+        for marker_id in range(1, 9):
             self._console_log("ar_marker_" + str(marker_id))
-
             self.move_to_marker(marker_id)
-
             #Sleep at the marker pos
             rospy.sleep(self._marker_pos_time)
 
@@ -88,17 +86,22 @@ class GamePlan(object):
         # moving towards the goal*/
 
         goal.target_pose.pose.position = Point(goal_x, goal_y, 0)
-
+        goal.target_pose.pose.orientation.x = 0.0
+        goal.target_pose.pose.orientation.y = 0.0
+        goal.target_pose.pose.orientation.z = 0.0
+        goal.target_pose.pose.orientation.w = 1.0
+	'''
         #Transform orientation
         if marker['derived']:
             quaterinion = tf.transformations.quaternion_from_euler(0, 0, goal_z)
             goal.target_pose.pose.orientation.x = quaterinion[0]
             goal.target_pose.pose.orientation.y = quaterinion[1]
             goal.target_pose.pose.orientation.z = quaterinion[2]
-            goal.target_pose.pose.orientation.w = quaterinion[3]
+            goal.target_pose.pose.orientation.w = 1.0
         else:
             goal.target_pose.pose.orientation = marker['transform'].rotation
-
+	    goal.target_pose.pose.orientation.w = 1.0
+	'''
         rospy.loginfo("Sending goal location ...")
         ac.send_goal(goal)
 
@@ -133,6 +136,7 @@ if __name__ == '__main__':
     if not input_var:
         #Run game
         game_plan.play_game()
+        game_plan.move_to_marker(11)
         print("Klaaaaaaaaar!!!!!!!!!!!")
 
     rospy.spin()
